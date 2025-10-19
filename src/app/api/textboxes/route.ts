@@ -13,3 +13,10 @@ export async function GET() {
     const returnTextboxes = Object.entries(textboxes).map(([id, content]) => ({ id, content }));
     return Response.json(returnTextboxes);
 }
+
+// Handle DELETE requests to remove a textbox
+export async function DELETE(request: Request) {
+    const { id } = await request.json();
+    delete textboxes[id];
+    return Response.json({ success : true });
+}

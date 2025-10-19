@@ -8,7 +8,7 @@ export default function Home() {
   //State to hold text boxes and initial content
   const [textboxes, setTextboxes] = useState<{id: number, content: string}[]>([]);
 
-  // Function to handle adding a new text box
+  // Handle adding a new text box
   const handleAddTextbox = () => {
 
     // Add a new textbox with date as identifier
@@ -22,6 +22,11 @@ export default function Home() {
       },
       body: JSON.stringify({ id: Date.now(), content: "" }),
     });
+  };
+
+  // Handle deleting a text box
+  const handleDeleteTextbox = (id: number) => {
+    setTextboxes(textboxes.filter((textbox) => textbox.id !== id));
   };
 
   // Handle pg refresh, retrieve textboxes in store
@@ -41,7 +46,12 @@ export default function Home() {
       <Header onAdd={handleAddTextbox}/>
       <div className="p-4">
         {textboxes.map((id) => (
-          <Textbox key={id.id} id={id.id} initialValue={id.content} />
+          <Textbox
+            key={id.id}
+            id={id.id}
+            initialValue={id.content}
+            onDelete={handleDeleteTextbox}
+          />
         ))}
       </div>
     </div>

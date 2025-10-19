@@ -1,13 +1,14 @@
 "use client";
 
+import { on } from "events";
 import { useEffect, useState } from "react";
 
-export default function Textbox({id, initialValue} : {id: number, initialValue: string}) {
+export default function Textbox({id, initialValue, onDelete} : {id: number, initialValue: string, onDelete: (id: number) => void}) {
     // Store textbox state
     const [text, setText] = useState(initialValue);
 
-    // Store textbox content to backend when changed
-    const saveContent = async (id: number, content: string) => {
+    // Store textbox content to store when changed
+    const saveContent = async (content: string) => {
         await fetch('/api/textboxes', {
             method: 'POST',
             headers: {
@@ -17,13 +18,32 @@ export default function Textbox({id, initialValue} : {id: number, initialValue: 
         });
     };
 
+    // Delete textbox from store
+    const deleteTextbox = async () => {
+        onDelete(id);
+        await fetch('/api/textboxes', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id }),
+        });
+    }
+
     return (
-        <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onBlur={() => saveContent(id, text)}
-            placeholder="Enter some text here..."
-            className="w-full border"
-        />
+        <div className="flex gap-2 w-full p-2">
+            <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onBlur={() => saveContent(text)}
+                placeholder="Enter some text here..."
+                className="flex-1 border"
+            />
+            <button
+                className="px-1 cursor-pointer"
+                onClick={deleteTextbox}>
+                X
+            </button>
+        </div>
     );
 }
