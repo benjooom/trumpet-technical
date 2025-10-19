@@ -1,7 +1,6 @@
 "use client";
 
-import { on } from "events";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 export default function Textbox({id, initialValue, onDelete} : {id: number, initialValue: string, onDelete: (id: number) => void}) {
     // Store textbox state
@@ -17,6 +16,16 @@ export default function Textbox({id, initialValue, onDelete} : {id: number, init
             body: JSON.stringify({ id, content }),
         });
     };
+
+    useEffect(() => {
+        if (text === initialValue) return;
+
+        const timeoutId = setTimeout(() => {
+            saveContent(text);
+        }, 1000)
+
+        return () => clearTimeout(timeoutId);
+    }, [text]);
 
     // Delete textbox from store
     const deleteTextbox = async () => {
@@ -35,7 +44,6 @@ export default function Textbox({id, initialValue, onDelete} : {id: number, init
             <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                onBlur={() => saveContent(text)}
                 placeholder="Enter some text here..."
                 className="flex-1 border"
             />
