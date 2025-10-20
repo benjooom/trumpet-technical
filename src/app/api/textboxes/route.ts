@@ -1,5 +1,5 @@
 // In memory storage for text boxes
-let textboxes: {[key: string]: string} = {};
+export let textboxes: {[key: string]: string} = {};
 
 // Handle POST requests to save textbox content
 export async function POST(request: Request) {
