@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <div>
       <Header onAdd={handleAddTextbox}/>
-      <div className="p-4">
+      <div className="p-4 bg-white">
         {textboxes.map((id) => (
           <Textbox
             key={id.id}

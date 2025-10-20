@@ -1,6 +1,7 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
+# Trumpet Technical Challenge
 ## Getting Started
+
+First, clone the repository
 
 First, run the development server:
 
@@ -16,21 +17,20 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tradeoffs and Additional Work
 
-## Learn More
+Provided I had more time for this project, the following are additional things I would work on in no particular order:
 
-To learn more about Next.js, take a look at the following resources:
+- The requirements here allowed for using in-memory storage for the back end. This preserves data between refreshes, however, not between server restarts. Adding a database would allow the data to persist even between server restart.
+- Since everything is running locally, comprehensive error handling wasn't a priority or something I ended up adding. In a real world scenario with user data and network variability, I would add request validation, cleaner responses, and clearer user feedback.
+- Although styling wasn't a requirement, adding font styling features would be nice.
+- Adding the ability to reorder the textboxes would make the project more relevant and would correspond more to the expected behavior in the provided example on trumpet's platform.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Tradeoffs I made:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Based on the requirements, it wasn't clear when a refresh would be initiated. Would the user click away from a textbox first and then refresh, or would they refresh while still typing?
+    - I opted to save and store the contents of the textbox using a debounce strategy (when there's a change, start a timer and store data if there are no changes after 1 second). This way, if a user is typing in the textbox, doesn't click away, and refreshes, their data would likely still be saved.
+    - This does make more requests than storing onBlur, but you gain in ensuring the most current data is stored. Further, we could have stored on every change in the textbox to save the most current data, however, this would make far too many requests, hurting performance.
+- I used `Date.now()` as the identifier for the generated textboxes for simplicity. Techncially collisions are possible if two textboxes were created at the millisecond, but it would be unlikely. Since everything is running locally, this approach is sufficient for this project. However, for robustness, it would be prudent to use something more unique because if this were operating in a distriubted system, collisions could occur (date/time not the same on each machine).
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
