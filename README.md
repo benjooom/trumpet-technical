@@ -39,7 +39,7 @@ bun dev
 
 ## File Structure
 The project is built with:
-- A frontend of React components that manage user intereaction and state. Relevant files are:
+- A frontend of React components that manage user interaction and state. Relevant files are:
     - `page.tsx`, `components/Header.tsx`, `components/Textbox.tsx`, `components/NewTextButton.tsx`
 - A basic API route and backend that stores textboxes and content in-memory. The relevant file is `api/textboxes/route.ts`
 - A comprehensive set of tests that cover components, API routes, and user workflows. The relevant files are `**.test.tsx`
@@ -59,5 +59,5 @@ Tradeoffs I made:
 - Based on the requirements, it wasn't clear when a refresh would be initiated. Would the user click away from a textbox first and then refresh, or would they refresh while still typing?
     - I opted to save and store the contents of the textbox using a debounce strategy (when there's a change, start a timer and store data if there are no changes after 1 second). This way, if a user is typing in the textbox, doesn't click away, and refreshes, their data would likely still be saved.
     - This does make more requests than storing onBlur, but you gain in ensuring the most current data is stored. Further, we could have stored on every change in the textbox to save the most current data, however, this would make far too many requests, hurting performance.
-- I used `Date.now()` as the identifier for the generated textboxes for simplicity. Techncially collisions are possible if two textboxes were created at the millisecond, but it would be unlikely. Since everything is running locally, this approach is sufficient for this project. However, for robustness, it would be prudent to use something more unique because if this were operating in a distriubted system, collisions could occur (date/time not the same on each machine).
+- I used `Date.now()` as the identifier for the generated textboxes for simplicity. Technically collisions are possible if two textboxes were created at the millisecond, but it would be unlikely. Since everything is running locally, this approach is sufficient for this project. However, for robustness, it would be prudent to use something more unique because if this were operating in a distributed system, collisions could occur (date/time not the same on each machine).
 
